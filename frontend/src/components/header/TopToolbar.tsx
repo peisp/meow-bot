@@ -22,7 +22,7 @@ export function TopToolbar({
   const [showModelMenu, setShowModelMenu] = useState(false)
 
   return (
-    <div className="h-14 backdrop-blur-xl border-b border-gray-200/60 flex items-center justify-between pr-4 pl-16 pt-2" style={{"--wails-draggable": "drag"} as any}>
+    <div className="h-14 backdrop-blur-xl border-b border-gray-200/60 flex items-center justify-between pr-4 pl-16 pt-2 selection-boundary" style={{"--wails-draggable": "drag"} as any}>
       {/* 左侧：对话标题 */}
       <div className="flex items-center">
         <h1 className="text-lg font-semibold text-gray-800 truncate max-w-md">

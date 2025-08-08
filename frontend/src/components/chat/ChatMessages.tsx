@@ -18,7 +18,7 @@ export function ChatMessages({ messages, isLoading = false }: ChatMessagesProps)
   }, [messages, isLoading])
 
   return (
-    <ScrollArea className="flex-1 h-full" ref={scrollAreaRef}>
+    <ScrollArea className="flex-1 h-full selection-boundary" ref={scrollAreaRef}>
       <div className="min-h-full">
         {messages.length === 0 ? (
           <div className="flex items-center justify-center h-full text-gray-600">

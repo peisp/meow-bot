@@ -44,9 +44,9 @@ export function ConversationSidebar({
   }
 
   return (
-    <div className="w-64 h-full backdrop-blur-xl border-r border-gray-200/60 flex flex-col" style={{"--wails-draggable": "drag"} as any}>
+    <div className="w-64 h-full backdrop-blur-xl border-r border-gray-200/60 flex flex-col selection-boundary">
       {/* 顶部标题区域 */}
-      <div className="h-14 pl-24 pt-2 pb-2 flex items-center text-lg font-semibold">
+      <div className="h-14 pl-24 pt-2 pb-2 flex items-center text-lg font-semibold" style={{"--wails-draggable": "drag"} as any}>
         Meow~Bot
       </div>
 
@@ -76,7 +76,7 @@ export function ConversationSidebar({
                       if (e.key === 'Enter') handleSaveEdit()
                       if (e.key === 'Escape') handleCancelEdit()
                     }}
-                    className="flex-1 bg-transparent border-none outline-none text-sm font-medium text-gray-800"
+                    className="flex-1 bg-transparent border-none outline-none text-sm font-medium text-gray-800 selectable"
                     autoFocus
                     onClick={(e) => e.stopPropagation()}
                   />

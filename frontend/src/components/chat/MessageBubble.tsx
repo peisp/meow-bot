@@ -11,7 +11,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
   const isUser = message.role === 'user'
   
   return (
-    <div className={cn("flex gap-3 p-6", isUser ? "flex-row-reverse" : "flex-row")}>
+    <div className={cn("flex gap-3 p-6 selection-boundary relative", isUser ? "flex-row-reverse" : "flex-row")}>
       <Avatar className="w-8 h-8 flex-shrink-0">
         <AvatarFallback className={cn(
           "text-xs border-2",
@@ -29,7 +29,7 @@ export function MessageBubble({ message }: MessageBubbleProps) {
           ? "bg-blue-500 text-white shadow-lg shadow-blue-500/25" 
           : "bg-white/80 backdrop-blur-sm text-gray-800 border border-gray-200/60 shadow-lg shadow-gray-900/5"
       )}>
-        <p className="text-[15px] leading-relaxed whitespace-pre-wrap font-normal">
+        <p className="text-[15px] leading-relaxed whitespace-pre-wrap font-normal selectable">
           {message.content}
         </p>
         <span className={cn(

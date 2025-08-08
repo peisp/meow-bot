@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useCallback } from "react"
 import { ConversationSidebar } from "@/components/sidebar/ConversationSidebar"
 import { TopToolbar } from "@/components/header/TopToolbar"
 import { ChatMessages } from "@/components/chat/ChatMessages"
@@ -39,8 +39,103 @@ export function MainLayout() {
     initializeApp()
   }, [initializeApp])
 
+  // 防止跨组件选中的动态CSS控制
+  useEffect(() => {
+    let activeSelectionBoundary: Element | null = null
+    let isSelecting = false
+
+    const getAllSelectionBoundaries = () => {
+      return Array.from(document.querySelectorAll('.selection-boundary'))
+    }
+
+    const enableOnlyActiveBoundary = (activeBoundary: Element) => {
+      const allBoundaries = getAllSelectionBoundaries()
+      
+      allBoundaries.forEach(boundary => {
+        if (boundary === activeBoundary) {
+          boundary.classList.add('selection-active')
+          boundary.classList.remove('selection-disabled')
+        } else {
+          boundary.classList.add('selection-disabled')
+          boundary.classList.remove('selection-active')
+        }
+      })
+    }
+
+    const resetAllBoundaries = () => {
+      const allBoundaries = getAllSelectionBoundaries()
+      allBoundaries.forEach(boundary => {
+        boundary.classList.remove('selection-active', 'selection-disabled')
+      })
+    }
+
+    const handleMouseDown = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      const selectableElement = target.closest('.selectable')
+      
+      if (selectableElement) {
+        const boundary = selectableElement.closest('.selection-boundary')
+        if (boundary) {
+          activeSelectionBoundary = boundary
+          isSelecting = true
+          enableOnlyActiveBoundary(boundary)
+        }
+      }
+    }
+
+    const handleMouseUp = () => {
+      if (isSelecting) {
+        // 延迟重置，让选中操作完成
+        setTimeout(() => {
+          resetAllBoundaries()
+          activeSelectionBoundary = null
+          isSelecting = false
+        }, 50)
+      }
+    }
+
+    const handleSelectStart = (e: Event) => {
+      const target = e.target as HTMLElement
+      const selectableElement = target.closest('.selectable')
+      
+      if (!selectableElement) {
+        e.preventDefault()
+        return false
+      }
+      
+      const boundary = selectableElement.closest('.selection-boundary')
+      if (boundary && activeSelectionBoundary && boundary !== activeSelectionBoundary) {
+        e.preventDefault()
+        return false
+      }
+    }
+
+    // 监听全局点击来重置状态
+    const handleClick = (e: MouseEvent) => {
+      const target = e.target as HTMLElement
+      if (!target.closest('.selectable')) {
+        resetAllBoundaries()
+        activeSelectionBoundary = null
+        isSelecting = false
+      }
+    }
+
+    document.addEventListener('mousedown', handleMouseDown)
+    document.addEventListener('mouseup', handleMouseUp)
+    document.addEventListener('selectstart', handleSelectStart)
+    document.addEventListener('click', handleClick)
+
+    return () => {
+      document.removeEventListener('mousedown', handleMouseDown)
+      document.removeEventListener('mouseup', handleMouseUp)
+      document.removeEventListener('selectstart', handleSelectStart)
+      document.removeEventListener('click', handleClick)
+      resetAllBoundaries()
+    }
+  }, [])
+
   return (
-    <div className="h-screen w-screen flex overflow-hidden">
+    <div className="h-screen w-screen flex overflow-hidden fixed inset-0">
       {/* 左侧边栏 */}
       <ConversationSidebar
         conversations={conversations}

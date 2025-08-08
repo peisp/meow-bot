@@ -32,7 +32,7 @@ function Slider({ label, value, min, max, step, onChange, description }: SliderP
           {description && (
             <div className="group relative">
               <Info className="w-3 h-3 text-gray-400 cursor-help" />
-              <div className="absolute left-0 top-full mt-1 w-64 p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none">
+              <div className="absolute left-0 top-full mt-1 w-64 p-2 bg-gray-800 text-white text-xs rounded opacity-0 group-hover:opacity-100 transition-opacity z-50 pointer-events-none selectable">
                 {description}
               </div>
             </div>
@@ -108,7 +108,7 @@ export function ParametersDrawer({
       {/* 抽屉 */}
       <div
         className={cn(
-          "fixed right-0 top-0 h-full w-80 bg-white/90 backdrop-blur-xl border-l border-gray-200/60 shadow-xl z-50 transition-transform duration-300 ease-out",
+          "fixed right-0 top-0 h-full w-80 bg-white/90 backdrop-blur-xl border-l border-gray-200/60 shadow-xl z-50 transition-transform duration-300 ease-out selection-boundary",
           isOpen ? "translate-x-0" : "translate-x-full"
         )}
       >
