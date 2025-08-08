@@ -24,9 +24,9 @@ export function TopToolbar({
   const [showModelMenu, setShowModelMenu] = useState(false)
 
   return (
-    <div className={cn("h-14 bg-toolbar backdrop-blur-xl border-b border-gray-300 shadow-[0_2px_8px_rgba(0,0,0,0.1)] flex items-center justify-between px-4 py-2 selection-boundary", isSidebarCollapsed && "pl-24")} style={{"--wails-draggable": "drag"} as any}>
+    <div className={cn("h-14 bg-toolbar backdrop-blur-xl border-b border-gray-300 shadow-[0_2px_8px_rgba(0,0,0,0.1)] flex items-center justify-between px-4 py-2 selection-boundary transition-all duration-300 ease-in-out", isSidebarCollapsed && "pl-24")} style={{"--wails-draggable": "drag"} as any}>
       {/* 左侧：对话标题 */}
-      <div className={cn("flex items-center", isSidebarCollapsed && "pl-20")}>
+      <div className={cn("flex items-center transition-all duration-300 ease-in-out", isSidebarCollapsed && "pl-20")}>
         <h1 className="text-lg font-semibold text-gray-800 truncate max-w-md">
           {conversationTitle}
         </h1>
@@ -38,7 +38,7 @@ export function TopToolbar({
           <Button
             variant="outline"
             className={cn(
-              "bg-white/60 hover:bg-white/80 border-gray-200/60 text-gray-700 shadow-sm transition-all duration-200",
+              "bg-white/60 hover:bg-white/80 border-gray-200/60 text-gray-700 shadow-sm transition-all duration-300 ease-in-out",
               showModelMenu && "bg-white/80"
             )}
             onClick={() => setShowModelMenu(!showModelMenu)}
@@ -55,13 +55,13 @@ export function TopToolbar({
 
           {/* 模型选择下拉菜单 */}
           {showModelMenu && (
-            <div className="absolute top-full left-0 mt-1 w-80 bg-white/90 backdrop-blur-xl border border-gray-200/60 rounded-lg shadow-lg z-50">
+            <div className="absolute top-full left-0 mt-1 w-80 bg-white/90 backdrop-blur-xl border border-gray-200/60 rounded-lg shadow-lg z-50 animate-in slide-in-from-top-2 duration-200">
               <div className="p-2 space-y-1">
                 {availableModels.map((model) => (
                   <div
                     key={model.id}
                     className={cn(
-                      "p-3 rounded-lg cursor-pointer transition-all duration-200",
+                      "p-3 rounded-lg cursor-pointer transition-all duration-300 ease-in-out",
                       currentModel.id === model.id
                         ? "bg-blue-100/60 border border-blue-200/60"
                         : "hover:bg-gray-100/60"
@@ -103,7 +103,7 @@ export function TopToolbar({
         <Button
           variant="outline"
           size="sm"
-          className="bg-white/60 hover:bg-white/80 border-gray-200/60 text-gray-700 shadow-sm transition-all duration-200"
+          className="bg-white/60 hover:bg-white/80 border-gray-200/60 text-gray-700 shadow-sm transition-all duration-300 ease-in-out"
           onClick={onOpenSettings}
         >
           <Settings className="w-4 h-4 mr-2" />

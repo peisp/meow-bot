@@ -148,7 +148,10 @@ export function MainLayout() {
       />
 
       {/* 左侧边栏 */}
-      {!isSidebarCollapsed && (
+      <div className={cn(
+        "transition-all duration-300 ease-in-out",
+        isSidebarCollapsed ? "w-0 opacity-0" : "w-64 opacity-100"
+      )}>
         <ConversationSidebar
           conversations={conversations}
           currentConversationId={currentConversationId ?? undefined}
@@ -159,19 +162,24 @@ export function MainLayout() {
           onRenameConversation={renameConversation}
           onToggleSidebar={() => setIsSidebarCollapsed(true)}
         />
-      )}
+      </div>
 
       {/* 主内容区域 */}
-      <div className={cn("flex-1 flex flex-col min-w-0", isSidebarCollapsed && "pl-0")}>
+      <div className={cn(
+        "flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out",
+        isSidebarCollapsed ? "pl-0" : "pl-0"
+      )}>
         {/* 顶部工具栏 */}
+        <div className="transition-all duration-300 ease-in-out" >
           <TopToolbar
-              isSidebarCollapsed={isSidebarCollapsed}
-              currentModel={currentModel}
-              availableModels={availableModels}
-              onModelChange={setCurrentModel}
-              onOpenSettings={() => setIsParametersOpen(true)}
-              conversationTitle={currentConversation?.title}
+            isSidebarCollapsed={isSidebarCollapsed}
+            currentModel={currentModel}
+            availableModels={availableModels}
+            onModelChange={setCurrentModel}
+            onOpenSettings={() => setIsParametersOpen(true)}
+            conversationTitle={currentConversation?.title}
           />
+        </div>
 
         {/* 聊天区域 */}
         <div className="flex-1 flex flex-col min-h-0 bg-chat-area backdrop-blur-sm shadow-xl shadow-gray-900/5 overflow-hidden">

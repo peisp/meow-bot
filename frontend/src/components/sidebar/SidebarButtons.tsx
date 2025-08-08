@@ -1,6 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { Plus, PanelLeftClose, PanelLeftOpen } from "lucide-react"
-import {cn} from "@/lib/utils";
+import { SidebarLeftIcon, SidebarRightIcon, BubblePencilIcon } from "@/components/icon/CustomIcons"
 
 interface SidebarButtonsProps {
   isCollapsed?: boolean
@@ -14,24 +13,26 @@ export function SidebarButtons({
   onNewConversation
 }: SidebarButtonsProps) {
   return (
-    <div className={cn("fixed top-0 left-0 z-50 flex items-center h-12 py-1 px-3 pl-24", isCollapsed && "bg-toolbar")} style={{"--wails-draggable": "drag"} as any}>
+    <div className="fixed top-0 left-0 z-50 flex items-center h-14 px-3 pl-24 bg-transparent" style={{"--wails-draggable": "drag"} as any}>
       <Button
         variant="ghost"
         size="sm"
-        className="h-8 w-8 p-0 hover:bg-gray-100/60"
+        className="h-8 w-8 p-0 hover:bg-gray-100/60 transition-all duration-200 mr-2"
         onClick={onToggleSidebar}
         title={isCollapsed ? "展开侧边栏" : "收起侧边栏"}
       >
-        {isCollapsed ? <PanelLeftOpen className="w-4 h-4" /> : <PanelLeftClose className="w-4 h-4" />}
+        <div className="transition-transform duration-300 ease-in-out">
+            <SidebarRightIcon />
+        </div>
       </Button>
       <Button
         variant="ghost"
         size="sm"
-        className="h-8 w-8 p-0 hover:bg-blue-100/60 hover:text-blue-600 ml-auto"
+        className="h-8 w-8 p-0 hover:bg-blue-100/60 hover:text-blue-600 ml-auto transition-all duration-200"
         onClick={onNewConversation}
         title="新建对话"
       >
-        <Plus className="w-4 h-4" />
+        <BubblePencilIcon />
       </Button>
     </div>
   )
