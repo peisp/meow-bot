@@ -5,6 +5,7 @@ import { ChevronDown, Settings, Cpu, Zap } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface TopToolbarProps {
+  isSidebarCollapsed: boolean
   currentModel: ModelConfig
   availableModels: ModelConfig[]
   onModelChange: (model: ModelConfig) => void
@@ -13,6 +14,7 @@ interface TopToolbarProps {
 }
 
 export function TopToolbar({
+  isSidebarCollapsed = false,
   currentModel,
   availableModels,
   onModelChange,
@@ -22,9 +24,9 @@ export function TopToolbar({
   const [showModelMenu, setShowModelMenu] = useState(false)
 
   return (
-    <div className="h-14 bg-toolbar backdrop-blur-xl border-b border-gray-300 shadow-[0_2px_8px_rgba(0,0,0,0.1)] flex items-center justify-between px-4 py-2 selection-boundary" style={{"--wails-draggable": "drag"} as any}>
+    <div className={cn("h-14 bg-toolbar backdrop-blur-xl border-b border-gray-300 shadow-[0_2px_8px_rgba(0,0,0,0.1)] flex items-center justify-between px-4 py-2 selection-boundary", isSidebarCollapsed && "pl-24")} style={{"--wails-draggable": "drag"} as any}>
       {/* 左侧：对话标题 */}
-      <div className="flex items-center">
+      <div className={cn("flex items-center", isSidebarCollapsed && "pl-20")}>
         <h1 className="text-lg font-semibold text-gray-800 truncate max-w-md">
           {conversationTitle}
         </h1>

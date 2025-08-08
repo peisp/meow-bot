@@ -1,12 +1,16 @@
-import { useEffect, useCallback } from "react"
+import { useEffect, useCallback, useState } from "react"
 import { ConversationSidebar } from "@/components/sidebar/ConversationSidebar"
+import { SidebarButtons } from "@/components/sidebar/SidebarButtons"
 import { TopToolbar } from "@/components/header/TopToolbar"
 import { ChatMessages } from "@/components/chat/ChatMessages"
 import { ChatInput } from "@/components/chat/ChatInput"
 import { ParametersDrawer } from "@/components/settings/ParametersDrawer"
 import { useApp } from "@/hooks/useApp"
+import { cn } from "@/lib/utils"
 
 export function MainLayout() {
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+
   const {
     // 对话相关
     conversations,
@@ -18,18 +22,18 @@ export function MainLayout() {
     renameConversation,
     sendMessage,
     isLoading,
-    
+
     // 模型相关
     currentModel,
     availableModels,
     setCurrentModel,
-    
+
     // 参数相关
     parameters,
     setParameters,
     isParametersOpen,
     setIsParametersOpen,
-    
+
     // 初始化
     initializeApp
   } = useApp()
@@ -50,7 +54,7 @@ export function MainLayout() {
 
     const enableOnlyActiveBoundary = (activeBoundary: Element) => {
       const allBoundaries = getAllSelectionBoundaries()
-      
+
       allBoundaries.forEach(boundary => {
         if (boundary === activeBoundary) {
           boundary.classList.add('selection-active')
@@ -72,7 +76,7 @@ export function MainLayout() {
     const handleMouseDown = (e: MouseEvent) => {
       const target = e.target as HTMLElement
       const selectableElement = target.closest('.selectable')
-      
+
       if (selectableElement) {
         const boundary = selectableElement.closest('.selection-boundary')
         if (boundary) {
@@ -97,12 +101,12 @@ export function MainLayout() {
     const handleSelectStart = (e: Event) => {
       const target = e.target as HTMLElement
       const selectableElement = target.closest('.selectable')
-      
+
       if (!selectableElement) {
         e.preventDefault()
         return false
       }
-      
+
       const boundary = selectableElement.closest('.selection-boundary')
       if (boundary && activeSelectionBoundary && boundary !== activeSelectionBoundary) {
         e.preventDefault()
@@ -136,26 +140,38 @@ export function MainLayout() {
 
   return (
     <div className="h-screen w-screen flex overflow-hidden fixed inset-0">
-      {/* 左侧边栏 */}
-      <ConversationSidebar
-        conversations={conversations}
-        currentConversationId={currentConversationId ?? undefined}
+      {/* 侧边栏按钮 - 始终显示 */}
+      <SidebarButtons
+        isCollapsed={isSidebarCollapsed}
+        onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
         onNewConversation={createNewConversation}
-        onSelectConversation={selectConversation}
-        onDeleteConversation={deleteConversation}
-        onRenameConversation={renameConversation}
       />
 
-      {/* 主内容区域 */}
-      <div className="flex-1 flex flex-col min-w-0">
-        {/* 顶部工具栏 */}
-        <TopToolbar
-          currentModel={currentModel}
-          availableModels={availableModels}
-          onModelChange={setCurrentModel}
-          onOpenSettings={() => setIsParametersOpen(true)}
-          conversationTitle={currentConversation?.title}
+      {/* 左侧边栏 */}
+      {!isSidebarCollapsed && (
+        <ConversationSidebar
+          conversations={conversations}
+          currentConversationId={currentConversationId ?? undefined}
+          isCollapsed={isSidebarCollapsed}
+          onNewConversation={createNewConversation}
+          onSelectConversation={selectConversation}
+          onDeleteConversation={deleteConversation}
+          onRenameConversation={renameConversation}
+          onToggleSidebar={() => setIsSidebarCollapsed(true)}
         />
+      )}
+
+      {/* 主内容区域 */}
+      <div className={cn("flex-1 flex flex-col min-w-0", isSidebarCollapsed && "pl-0")}>
+        {/* 顶部工具栏 */}
+          <TopToolbar
+              isSidebarCollapsed={isSidebarCollapsed}
+              currentModel={currentModel}
+              availableModels={availableModels}
+              onModelChange={setCurrentModel}
+              onOpenSettings={() => setIsParametersOpen(true)}
+              conversationTitle={currentConversation?.title}
+          />
 
         {/* 聊天区域 */}
         <div className="flex-1 flex flex-col min-h-0 bg-chat-area backdrop-blur-sm shadow-xl shadow-gray-900/5 overflow-hidden">

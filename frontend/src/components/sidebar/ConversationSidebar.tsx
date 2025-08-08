@@ -2,27 +2,31 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Conversation } from "@/types/conversation"
-import { Plus, MessageSquare, MoreHorizontal, Trash2, Edit3, Settings, Sun, Moon, Monitor } from "lucide-react"
+import { Plus, MessageSquare, MoreHorizontal, Trash2, Edit3, Settings, Sun, Moon, Monitor, PanelLeftClose, PanelLeftOpen } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface ConversationSidebarProps {
   conversations: Conversation[]
   currentConversationId?: string
+  isCollapsed?: boolean
   onNewConversation: () => void
   onSelectConversation: (id: string) => void
   onDeleteConversation: (id: string) => void
   onRenameConversation: (id: string, newTitle: string) => void
   onOpenSettings?: () => void
+  onToggleSidebar?: () => void
 }
 
 export function ConversationSidebar({
   conversations,
   currentConversationId,
+  isCollapsed = false,
   onNewConversation,
   onSelectConversation,
   onDeleteConversation,
   onRenameConversation,
-  onOpenSettings
+  onOpenSettings,
+  onToggleSidebar
 }: ConversationSidebarProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState("")
@@ -67,13 +71,8 @@ export function ConversationSidebar({
 
   return (
     <div className="w-64 h-full bg-sidebar backdrop-blur-xl border-r border-gray-300 shadow-[2px_0_8px_rgba(0,0,0,0.1)] flex flex-col selection-boundary">
-      {/* 顶部标题区域 */}
-      <div className="h-14 pl-24 pt-2 pb-2 flex items-center text-lg font-semibold" style={{"--wails-draggable": "drag"} as any}>
-        Meow~Bot
-      </div>
-
       {/* 对话列表 */}
-      <ScrollArea className="flex-1">
+      <ScrollArea className="flex-1 mt-10">
         <div className="p-2 space-y-1">
           {conversations.map((conversation) => (
             <div
