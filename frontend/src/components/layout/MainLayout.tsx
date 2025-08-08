@@ -1,209 +1,210 @@
-import { useEffect, useState } from "react"
-import { ConversationSidebar } from "@/components/sidebar/ConversationSidebar"
-import { SidebarButtons } from "@/components/sidebar/SidebarButtons"
-import { TopToolbar } from "@/components/header/TopToolbar"
-import { ChatMessages } from "@/components/chat/ChatMessages"
-import { ChatInput } from "@/components/chat/ChatInput"
-import { ParametersDrawer } from "@/components/settings/ParametersDrawer"
-import { useApp } from "@/hooks/useApp"
-import { cn } from "@/lib/utils"
+import {useEffect, useState} from "react"
+import {ConversationSidebar} from "@/components/sidebar/ConversationSidebar"
+import {SidebarButtons} from "@/components/sidebar/SidebarButtons"
+import {TopToolbar} from "@/components/header/TopToolbar"
+import {ChatMessages} from "@/components/chat/ChatMessages"
+import {ChatInput} from "@/components/chat/ChatInput"
+import {ParametersDrawer} from "@/components/settings/ParametersDrawer"
+import {useApp} from "@/hooks/useApp"
+import {cn} from "@/lib/utils"
 
 export function MainLayout() {
-  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
+    const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false)
 
-  const {
-    // 对话相关
-    conversations,
-    currentConversation,
-    currentConversationId,
-    createNewConversation,
-    selectConversation,
-    deleteConversation,
-    renameConversation,
-    sendMessage,
-    isLoading,
+    const {
+        // 对话相关
+        conversations,
+        currentConversation,
+        currentConversationId,
+        createNewConversation,
+        selectConversation,
+        deleteConversation,
+        renameConversation,
+        sendMessage,
+        isLoading,
 
-    // 模型相关
-    currentModel,
-    availableModels,
-    setCurrentModel,
+        // 模型相关
+        currentModel,
+        availableModels,
+        setCurrentModel,
 
-    // 参数相关
-    parameters,
-    setParameters,
-    isParametersOpen,
-    setIsParametersOpen,
+        // 参数相关
+        parameters,
+        setParameters,
+        isParametersOpen,
+        setIsParametersOpen,
 
-    // 初始化
-    initializeApp
-  } = useApp()
+        // 初始化
+        initializeApp
+    } = useApp()
 
-  // 初始化应用
-  useEffect(() => {
-    initializeApp()
-  }, [initializeApp])
+    // 初始化应用
+    useEffect(() => {
+        initializeApp()
+    }, [initializeApp])
 
-  // 防止跨组件选中的动态CSS控制
-  useEffect(() => {
-    let activeSelectionBoundary: Element | null = null
-    let isSelecting = false
+    // 防止跨组件选中的动态CSS控制
+    useEffect(() => {
+        let activeSelectionBoundary: Element | null = null
+        let isSelecting = false
 
-    const getAllSelectionBoundaries = () => {
-      return Array.from(document.querySelectorAll('.selection-boundary'))
-    }
-
-    const enableOnlyActiveBoundary = (activeBoundary: Element) => {
-      const allBoundaries = getAllSelectionBoundaries()
-
-      allBoundaries.forEach(boundary => {
-        if (boundary === activeBoundary) {
-          boundary.classList.add('selection-active')
-          boundary.classList.remove('selection-disabled')
-        } else {
-          boundary.classList.add('selection-disabled')
-          boundary.classList.remove('selection-active')
+        const getAllSelectionBoundaries = () => {
+            return Array.from(document.querySelectorAll('.selection-boundary'))
         }
-      })
-    }
 
-    const resetAllBoundaries = () => {
-      const allBoundaries = getAllSelectionBoundaries()
-      allBoundaries.forEach(boundary => {
-        boundary.classList.remove('selection-active', 'selection-disabled')
-      })
-    }
+        const enableOnlyActiveBoundary = (activeBoundary: Element) => {
+            const allBoundaries = getAllSelectionBoundaries()
 
-    const handleMouseDown = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      const selectableElement = target.closest('.selectable')
-
-      if (selectableElement) {
-        const boundary = selectableElement.closest('.selection-boundary')
-        if (boundary) {
-          activeSelectionBoundary = boundary
-          isSelecting = true
-          enableOnlyActiveBoundary(boundary)
+            allBoundaries.forEach(boundary => {
+                if (boundary === activeBoundary) {
+                    boundary.classList.add('selection-active')
+                    boundary.classList.remove('selection-disabled')
+                } else {
+                    boundary.classList.add('selection-disabled')
+                    boundary.classList.remove('selection-active')
+                }
+            })
         }
-      }
-    }
 
-    const handleMouseUp = () => {
-      if (isSelecting) {
-        // 延迟重置，让选中操作完成
-        setTimeout(() => {
-          resetAllBoundaries()
-          activeSelectionBoundary = null
-          isSelecting = false
-        }, 50)
-      }
-    }
+        const resetAllBoundaries = () => {
+            const allBoundaries = getAllSelectionBoundaries()
+            allBoundaries.forEach(boundary => {
+                boundary.classList.remove('selection-active', 'selection-disabled')
+            })
+        }
 
-    const handleSelectStart = (e: Event) => {
-      const target = e.target as HTMLElement
-      const selectableElement = target.closest('.selectable')
+        const handleMouseDown = (e: MouseEvent) => {
+            const target = e.target as HTMLElement
+            const selectableElement = target.closest('.selectable')
 
-      if (!selectableElement) {
-        e.preventDefault()
-        return false
-      }
+            if (selectableElement) {
+                const boundary = selectableElement.closest('.selection-boundary')
+                if (boundary) {
+                    activeSelectionBoundary = boundary
+                    isSelecting = true
+                    enableOnlyActiveBoundary(boundary)
+                }
+            }
+        }
 
-      const boundary = selectableElement.closest('.selection-boundary')
-      if (boundary && activeSelectionBoundary && boundary !== activeSelectionBoundary) {
-        e.preventDefault()
-        return false
-      }
-    }
+        const handleMouseUp = () => {
+            if (isSelecting) {
+                // 延迟重置，让选中操作完成
+                setTimeout(() => {
+                    resetAllBoundaries()
+                    activeSelectionBoundary = null
+                    isSelecting = false
+                }, 50)
+            }
+        }
 
-    // 监听全局点击来重置状态
-    const handleClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      if (!target.closest('.selectable')) {
-        resetAllBoundaries()
-        activeSelectionBoundary = null
-        isSelecting = false
-      }
-    }
+        const handleSelectStart = (e: Event) => {
+            const target = e.target as HTMLElement
+            const selectableElement = target.closest('.selectable')
 
-    document.addEventListener('mousedown', handleMouseDown)
-    document.addEventListener('mouseup', handleMouseUp)
-    document.addEventListener('selectstart', handleSelectStart)
-    document.addEventListener('click', handleClick)
+            if (!selectableElement) {
+                e.preventDefault()
+                return false
+            }
 
-    return () => {
-      document.removeEventListener('mousedown', handleMouseDown)
-      document.removeEventListener('mouseup', handleMouseUp)
-      document.removeEventListener('selectstart', handleSelectStart)
-      document.removeEventListener('click', handleClick)
-      resetAllBoundaries()
-    }
-  }, [])
+            const boundary = selectableElement.closest('.selection-boundary')
+            if (boundary && activeSelectionBoundary && boundary !== activeSelectionBoundary) {
+                e.preventDefault()
+                return false
+            }
+        }
 
-  return (
-    <div className="h-screen w-screen flex overflow-hidden fixed inset-0">
-      {/* 侧边栏按钮 - 始终显示 */}
-      <SidebarButtons
-        isCollapsed={isSidebarCollapsed}
-        onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
-        onNewConversation={createNewConversation}
-      />
+        // 监听全局点击来重置状态
+        const handleClick = (e: MouseEvent) => {
+            const target = e.target as HTMLElement
+            if (!target.closest('.selectable')) {
+                resetAllBoundaries()
+                activeSelectionBoundary = null
+                isSelecting = false
+            }
+        }
 
-      {/* 左侧边栏 */}
-      <div className={cn(
-        "transition-all duration-300 ease-in-out",
-        isSidebarCollapsed ? "w-0 opacity-0" : "w-64 opacity-100"
-      )}>
-        <ConversationSidebar
-          conversations={conversations}
-          currentConversationId={currentConversationId ?? undefined}
-          isCollapsed={isSidebarCollapsed}
-          onNewConversation={createNewConversation}
-          onSelectConversation={selectConversation}
-          onDeleteConversation={deleteConversation}
-          onRenameConversation={renameConversation}
-          onToggleSidebar={() => setIsSidebarCollapsed(true)}
-        />
-      </div>
+        document.addEventListener('mousedown', handleMouseDown)
+        document.addEventListener('mouseup', handleMouseUp)
+        document.addEventListener('selectstart', handleSelectStart)
+        document.addEventListener('click', handleClick)
 
-      {/* 主内容区域 */}
-      <div className={cn(
-        "flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out",
-        isSidebarCollapsed ? "pl-0" : "pl-0"
-      )}>
-        {/* 顶部工具栏 */}
-        <div className="transition-all duration-300 ease-in-out" >
-          <TopToolbar
-            isSidebarCollapsed={isSidebarCollapsed}
-            currentModel={currentModel}
-            availableModels={availableModels}
-            onModelChange={setCurrentModel}
-            onOpenSettings={() => setIsParametersOpen(true)}
-            conversationTitle={currentConversation?.title}
-          />
+        return () => {
+            document.removeEventListener('mousedown', handleMouseDown)
+            document.removeEventListener('mouseup', handleMouseUp)
+            document.removeEventListener('selectstart', handleSelectStart)
+            document.removeEventListener('click', handleClick)
+            resetAllBoundaries()
+        }
+    }, [])
+
+    return (
+        <div className="h-screen w-screen flex overflow-hidden fixed inset-0">
+            {/* 侧边栏按钮 - 始终显示 */}
+            <SidebarButtons
+                isCollapsed={isSidebarCollapsed}
+                onToggleSidebar={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+                onNewConversation={createNewConversation}
+            />
+
+            {/* 左侧边栏 */}
+            <div className={cn(
+                "transition-all duration-300 ease-in-out",
+                isSidebarCollapsed ? "w-0 opacity-0" : "w-[240px] opacity-100"
+            )}>
+                <ConversationSidebar
+                    conversations={conversations}
+                    currentConversationId={currentConversationId ?? undefined}
+                    isCollapsed={isSidebarCollapsed}
+                    onNewConversation={createNewConversation}
+                    onSelectConversation={selectConversation}
+                    onDeleteConversation={deleteConversation}
+                    onRenameConversation={renameConversation}
+                    onToggleSidebar={() => setIsSidebarCollapsed(true)}
+                />
+            </div>
+
+            {/* 主内容区域 */}
+            <div className={cn(
+                "flex-1 flex flex-col min-w-0 transition-all duration-300 ease-in-out",
+                isSidebarCollapsed ? "pl-0" : "pl-0"
+            )}>
+                {/* 顶部工具栏 */}
+                <div className="transition-all duration-300 ease-in-out">
+                    <TopToolbar
+                        isSidebarCollapsed={isSidebarCollapsed}
+                        currentModel={currentModel}
+                        availableModels={availableModels}
+                        onModelChange={setCurrentModel}
+                        onOpenSettings={() => setIsParametersOpen(true)}
+                        conversationTitle={currentConversation?.title}
+                    />
+                </div>
+
+                {/* 聊天区域 */}
+                <div
+                    className="flex-1 flex flex-col min-h-0 bg-chat-area backdrop-blur-sm shadow-xl shadow-gray-900/5 overflow-hidden">
+                    {/* 消息列表 */}
+                    <ChatMessages
+                        messages={currentConversation?.messages || []}
+                        isLoading={isLoading}
+                    />
+
+                    {/* 输入框 */}
+                    <ChatInput
+                        onSendMessage={sendMessage}
+                        isLoading={isLoading}
+                    />
+                </div>
+            </div>
+
+            {/* 参数设置抽屉 */}
+            <ParametersDrawer
+                isOpen={isParametersOpen}
+                onClose={() => setIsParametersOpen(false)}
+                parameters={parameters}
+                onParametersChange={setParameters}
+            />
         </div>
-
-        {/* 聊天区域 */}
-        <div className="flex-1 flex flex-col min-h-0 bg-chat-area backdrop-blur-sm shadow-xl shadow-gray-900/5 overflow-hidden">
-          {/* 消息列表 */}
-          <ChatMessages
-            messages={currentConversation?.messages || []}
-            isLoading={isLoading}
-          />
-
-          {/* 输入框 */}
-          <ChatInput
-            onSendMessage={sendMessage}
-            isLoading={isLoading}
-          />
-        </div>
-      </div>
-
-      {/* 参数设置抽屉 */}
-      <ParametersDrawer
-        isOpen={isParametersOpen}
-        onClose={() => setIsParametersOpen(false)}
-        parameters={parameters}
-        onParametersChange={setParameters}
-      />
-    </div>
-  )
+    )
 }
