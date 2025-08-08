@@ -70,6 +70,8 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
+    /* 默认光标样式 */
+    cursor: default;
   }
   html, body {
     @apply text-foreground;
@@ -102,6 +104,7 @@
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+    cursor: text;
   }
   
   .selectable-all {
@@ -117,6 +120,22 @@
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+    cursor: text;
+  }
+  
+  /* 按钮和可点击元素使用指针光标 */
+  button, [role="button"], .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  /* 链接使用指针光标 */
+  a {
+    cursor: pointer;
+  }
+  
+  /* 禁用元素使用禁用光标 */
+  [disabled], .cursor-not-allowed {
+    cursor: not-allowed;
   }
   
   /* 防止跨组件选中 - 组件边界隔离 */
