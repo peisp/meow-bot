@@ -2,7 +2,8 @@ import { useEffect, useRef } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { MessageBubble } from "./MessageBubble"
 import { Message } from "@/types/conversation"
-import { Loader2, MessageSquare } from "lucide-react"
+import { Loader2 } from "lucide-react"
+import {MessageBadgeWaveformIcon} from "@/components/icon/CustomIcons";
 
 interface ChatMessagesProps {
   messages: Message[]
@@ -24,7 +25,7 @@ export function ChatMessages({ messages, isLoading = false }: ChatMessagesProps)
           <div className="flex items-center justify-center h-full text-gray-600">
             <div className="text-center p-8">
               <div className="w-20 h-20 bg-gradient-to-br from-blue-500/20 to-purple-600/20 border border-blue-200/30 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                <MessageSquare className="w-10 h-10 text-blue-500" />
+                <MessageBadgeWaveformIcon className="w-14 h-14 text-blue-500" />
               </div>
               <h3 className="text-2xl font-medium mb-3 text-gray-800">开始新对话</h3>
               <p className="text-base text-gray-600 max-w-md">选择模型并输入你的问题，AI 助手将为你提供帮助。你可以在右侧调整对话参数以获得更好的体验。</p>

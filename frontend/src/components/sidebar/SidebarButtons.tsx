@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button"
-import { SidebarLeftIcon, SidebarRightIcon, BubblePencilIcon } from "@/components/icon/CustomIcons"
+import { SidebarRightIcon, BubblePencilIcon } from "@/components/icon/CustomIcons"
 
 interface SidebarButtonsProps {
   isCollapsed?: boolean
@@ -13,7 +13,7 @@ export function SidebarButtons({
   onNewConversation
 }: SidebarButtonsProps) {
   return (
-    <div className="fixed top-0 left-0 z-50 flex items-center h-14 px-3 pl-24 bg-transparent" style={{"--wails-draggable": "drag"} as any}>
+    <div className="fixed top-0 left-0 z-50 flex items-center h-14 px-3 pl-24 bg-transparent">
       <Button
         variant="ghost"
         size="sm"

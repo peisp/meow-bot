@@ -71,8 +71,9 @@ export function ConversationSidebar({
 
   return (
     <div className="w-64 h-full bg-sidebar backdrop-blur-xl border-r border-gray-300 shadow-[2px_0_8px_rgba(0,0,0,0.1)] flex flex-col selection-boundary transition-all duration-300 ease-in-out">
-      {/* 对话列表 */}
-      <ScrollArea className="flex-1 mt-10">
+        <div className="h-10 w-64 bg-transparent" style={{"--wails-draggable": "drag"} as any} />
+        {/* 对话列表 */}
+      <ScrollArea className="flex-1">
         <div className="p-2 space-y-1">
           {conversations.map((conversation) => (
             <div
