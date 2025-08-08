@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100% / 0;
+    --foreground: 222.2 84% 4.9%;
+    --card: 0 0% 100% / 0;
+    --card-foreground: 222.2 84% 4.9%;
+    --popover: 0 0% 100% / 0.9;
+    --popover-foreground: 222.2 84% 4.9%;
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+    --secondary: 210 40% 96% / 0.8;
+    --secondary-foreground: 222.2 84% 4.9%;
+    --muted: 210 40% 96% / 0.8;
+    --muted-foreground: 215.4 16.3% 46.9%;
+    --accent: 210 40% 96% / 0.8;
+    --accent-foreground: 222.2 84% 4.9%;
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 214.3 31.8% 91.4% / 0.6;
+    --input: 214.3 31.8% 91.4% / 0.8;
+    --ring: 222.2 84% 4.9%;
+    --radius: 0.5rem;
+    
+    /* 自定义颜色变量 */
+    --sidebar-bg: 210 6% 93% / 0.3;
+    --toolbar-bg: 0 0% 100%;
+    --input-bg: 210 6% 93% / 0.3;
+    --chat-bg: 0 0% 100%;
+  }
+
+  .dark {
+    --background: 0 0% 0% / 0;
+    --foreground: 210 40% 98%;
+    --card: 0 0% 0% / 0;
+    --card-foreground: 210 40% 98%;
+    --popover: 222.2 84% 4.9% / 0.9;
+    --popover-foreground: 210 40% 98%;
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 217.2 32.6% 17.5% / 0.8;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217.2 32.6% 17.5% / 0.8;
+    --muted-foreground: 215 20.2% 65.1%;
+    --accent: 217.2 32.6% 17.5% / 0.8;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217.2 32.6% 17.5% / 0.6;
+    --input: 217.2 32.6% 17.5% / 0.8;
+    --ring: 212.7 26.8% 83.9%;
+    
+    /* 深色模式自定义颜色变量 */
+    --sidebar-bg: 220 6% 18% / 0.8;
+    --toolbar-bg: 220 6% 18% / 0.8;
+    --input-bg: 220 6% 18% / 0.8;
+    --chat-bg: 0 0% 20%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+    box-sizing: border-box;
+    /* 默认禁止选中 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* 默认光标样式 */
+    cursor: default;
+  }
+  html, body {
+    @apply text-foreground;
+    background: transparent;
+    overflow: hidden;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    width: 100%;
+    /* 禁用滚动弹性效果 */
+    overscroll-behavior: none;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  #root {
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    left: 0;
+  }
+}
+
+/* 允许选中的元素 */
+@layer components {
+  .selectable {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    cursor: text;
+  }
+  
+  .selectable-all {
+    -webkit-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+  }
+  
+  /* 输入框默认可选中 */
+  input, textarea {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+    cursor: text;
+  }
+  
+  /* 按钮和可点击元素使用指针光标 */
+  button, [role="button"], .cursor-pointer {
+    cursor: pointer;
+  }
+  
+  /* 链接使用指针光标 */
+  a {
+    cursor: pointer;
+  }
+  
+  /* 禁用元素使用禁用光标 */
+  [disabled], .cursor-not-allowed {
+    cursor: not-allowed;
+  }
+  
+  /* 防止跨组件选中 - 组件边界隔离 */
+  .selection-boundary {
+    position: relative;
+  }
+  
+  /* 在边界内允许选中 */
+  .selection-boundary .selectable {
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+  
+  /* 动态禁用选中状态 - 当其他组件正在被选中时 */
+  .selection-disabled {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+    pointer-events: none;
+  }
+  
+  .selection-disabled * {
+    -webkit-user-select: none !important;
+    -moz-user-select: none !important;
+    -ms-user-select: none !important;
+    user-select: none !important;
+  }
+  
+  /* 当前正在被选中的组件保持可选中 */
+  .selection-active .selectable {
+    -webkit-user-select: text !important;
+    -moz-user-select: text !important;
+    -ms-user-select: text !important;
+    user-select: text !important;
+    pointer-events: auto;
+  }
+  
+  /* 自定义背景颜色类 */
+  .bg-sidebar {
+    background-color: hsl(var(--sidebar-bg));
+  }
+  
+  .bg-toolbar {
+    background-color: hsl(var(--toolbar-bg));
+  }
+  
+  .bg-input-area {
+    background-color: hsl(var(--input-bg));
+  }
+  
+  .bg-chat-area {
+    background-color: hsl(var(--chat-bg));
+  }
+}
+
+@font-face {
+    font-family: "Nunito";
+    font-style: normal;
+    font-weight: 400;
+    src: local(""),
+    url("assets/fonts/nunito-v16-latin-regular.woff2") format("woff2");
+}
+
+html {
+    font-family: "Nunito", -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Oxygen", "Ubuntu", "Cantarell", "Fira Sans", "Droid Sans", "Helvetica Neue",
+    sans-serif;
+}
