@@ -44,17 +44,18 @@ export function ConversationSidebar({
   }
 
   return (
-    <div className="w-64 h-full bg-gray-50/80 backdrop-blur-xl border-r border-gray-200/60 flex flex-col">
+    <div className="w-64 h-full bg-gray-50/80 backdrop-blur-xl border-r border-gray-200/60 flex flex-col" style={{"--wails-draggable": "drag"} as any}>
       {/* 顶部新对话按钮 */}
-      <div className="p-3 border-b border-gray-200/60">
-        <Button
-          onClick={onNewConversation}
-          className="w-full justify-start bg-white/60 hover:bg-white/80 text-gray-700 border border-gray-200/60 shadow-sm transition-all duration-200"
-          variant="outline"
-        >
-          <Plus className="w-4 h-4 mr-2" />
-          新对话
-        </Button>
+      <div className="pl-16 flex items-center text-lg font-semibold h-14">
+          {/*Meow-Bot*/}
+        {/*<Button*/}
+        {/*  onClick={onNewConversation}*/}
+        {/*  className="w-full justify-start bg-white/60 hover:bg-white/80 text-gray-700 border border-gray-200/60 shadow-sm transition-all duration-200"*/}
+        {/*  variant="outline"*/}
+        {/*>*/}
+        {/*  <Plus className="w-4 h-4 mr-2" />*/}
+        {/*  新对话*/}
+        {/*</Button>*/}
       </div>
 
       {/* 对话列表 */}

@@ -30,7 +30,13 @@ func main() {
 			// 在 Mac 上，需要额外的设置来确保窗口内容区域透明
 			WebviewIsTransparent: true,
 			WindowIsTranslucent:  true,
-			TitleBar:             mac.TitleBarHidden(),
+			TitleBar:             mac.TitleBarHiddenInset(),
+			Appearance:           mac.NSAppearanceNameAqua,
+			About: &mac.AboutInfo{
+				Title:   "meow-bot",
+				Message: "© 2021 meow",
+				//Icon:    icon,
+			},
 		},
 		OnStartup: app.Startup,
 		Bind: []interface{}{

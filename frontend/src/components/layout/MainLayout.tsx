@@ -44,7 +44,7 @@ export function MainLayout() {
       {/* 左侧边栏 */}
       <ConversationSidebar
         conversations={conversations}
-        currentConversationId={currentConversationId}
+        currentConversationId={currentConversationId ?? undefined}
         onNewConversation={createNewConversation}
         onSelectConversation={selectConversation}
         onDeleteConversation={deleteConversation}
