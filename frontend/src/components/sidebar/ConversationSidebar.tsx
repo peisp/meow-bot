@@ -2,7 +2,7 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Conversation } from "@/types/conversation"
-import { Plus, MessageSquare, MoreHorizontal, Trash2, Edit3 } from "lucide-react"
+import { Plus, MessageSquare, MoreHorizontal, Trash2, Edit3, Settings, Sun, Moon, Monitor } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface ConversationSidebarProps {
@@ -12,6 +12,7 @@ interface ConversationSidebarProps {
   onSelectConversation: (id: string) => void
   onDeleteConversation: (id: string) => void
   onRenameConversation: (id: string, newTitle: string) => void
+  onOpenSettings?: () => void
 }
 
 export function ConversationSidebar({
@@ -20,10 +21,12 @@ export function ConversationSidebar({
   onNewConversation,
   onSelectConversation,
   onDeleteConversation,
-  onRenameConversation
+  onRenameConversation,
+  onOpenSettings
 }: ConversationSidebarProps) {
   const [editingId, setEditingId] = useState<string | null>(null)
   const [editTitle, setEditTitle] = useState("")
+  const [themeMode, setThemeMode] = useState<'system' | 'light' | 'dark'>('system')
 
   const handleStartEdit = (conversation: Conversation) => {
     setEditingId(conversation.id)
@@ -41,6 +44,25 @@ export function ConversationSidebar({
   const handleCancelEdit = () => {
     setEditingId(null)
     setEditTitle("")
+  }
+
+  const handleThemeToggle = () => {
+    const themes: ('system' | 'light' | 'dark')[] = ['system', 'light', 'dark']
+    const currentIndex = themes.indexOf(themeMode)
+    const nextIndex = (currentIndex + 1) % themes.length
+    setThemeMode(themes[nextIndex])
+    // TODO: 实现主题切换逻辑
+  }
+
+  const getThemeIcon = () => {
+    switch (themeMode) {
+      case 'light':
+        return <Sun className="w-4 h-4" />
+      case 'dark':
+        return <Moon className="w-4 h-4" />
+      default:
+        return <Monitor className="w-4 h-4" />
+    }
   }
 
   return (
@@ -121,6 +143,28 @@ export function ConversationSidebar({
           ))}
         </div>
       </ScrollArea>
+
+      {/* 底部按钮区域 */}
+      <div className="p-3 flex justify-between">
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0 hover:bg-gray-100/60"
+          onClick={onOpenSettings}
+          title="设置"
+        >
+          <Settings className="w-4 h-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="h-8 w-8 p-0 hover:bg-gray-100/60"
+          onClick={handleThemeToggle}
+          title={`当前主题: ${themeMode === 'system' ? '系统' : themeMode === 'light' ? '亮色' : '暗色'}`}
+        >
+          {getThemeIcon()}
+        </Button>
+      </div>
     </div>
   )
 }
