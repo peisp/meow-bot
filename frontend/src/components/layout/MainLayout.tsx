@@ -40,7 +40,7 @@ export function MainLayout() {
   }, [initializeApp])
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-br from-blue-50/50 to-purple-50/50 flex overflow-hidden">
+    <div className="h-screen w-screen flex overflow-hidden">
       {/* 左侧边栏 */}
       <ConversationSidebar
         conversations={conversations}
@@ -63,7 +63,7 @@ export function MainLayout() {
         />
 
         {/* 聊天区域 */}
-        <div className="flex-1 flex flex-col min-h-0 bg-white/30 backdrop-blur-sm m-4 mt-0 rounded-lg border border-white/40 shadow-xl shadow-gray-900/5 overflow-hidden">
+        <div className="flex-1 flex flex-col min-h-0 backdrop-blur-sm m-4 mt-0 rounded-lg border border-white/40 shadow-xl shadow-gray-900/5 overflow-hidden">
           {/* 消息列表 */}
           <ChatMessages
             messages={currentConversation?.messages || []}
