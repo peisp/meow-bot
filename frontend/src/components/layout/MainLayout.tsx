@@ -158,7 +158,7 @@ export function MainLayout() {
         />
 
         {/* 聊天区域 */}
-        <div className="flex-1 flex flex-col min-h-0 backdrop-blur-sm m-4 mt-0 rounded-lg border border-white/40 shadow-xl shadow-gray-900/5 overflow-hidden">
+        <div className="flex-1 flex flex-col min-h-0 bg-chat-area backdrop-blur-sm shadow-xl shadow-gray-900/5 overflow-hidden">
           {/* 消息列表 */}
           <ChatMessages
             messages={currentConversation?.messages || []}

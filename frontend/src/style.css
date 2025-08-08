@@ -4,9 +4,9 @@
 
 @layer base {
   :root {
-    --background: transparent;
+    --background: 0 0% 100% / 0;
     --foreground: 222.2 84% 4.9%;
-    --card: transparent;
+    --card: 0 0% 100% / 0;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100% / 0.9;
     --popover-foreground: 222.2 84% 4.9%;
@@ -24,12 +24,18 @@
     --input: 214.3 31.8% 91.4% / 0.8;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
+    
+    /* 自定义颜色变量 */
+    --sidebar-bg: 210 6% 93% / 0.3;
+    --toolbar-bg: 0 0% 100%;
+    --input-bg: 210 6% 93% / 0.3;
+    --chat-bg: 0 0% 100%;
   }
 
   .dark {
-    --background: transparent;
+    --background: 0 0% 0% / 0;
     --foreground: 210 40% 98%;
-    --card: transparent;
+    --card: 0 0% 0% / 0;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9% / 0.9;
     --popover-foreground: 210 40% 98%;
@@ -46,6 +52,12 @@
     --border: 217.2 32.6% 17.5% / 0.6;
     --input: 217.2 32.6% 17.5% / 0.8;
     --ring: 212.7 26.8% 83.9%;
+    
+    /* 深色模式自定义颜色变量 */
+    --sidebar-bg: 220 6% 18% / 0.8;
+    --toolbar-bg: 220 6% 18% / 0.8;
+    --input-bg: 220 6% 18% / 0.8;
+    --chat-bg: 0 0% 20%;
   }
 }
 
@@ -143,6 +155,23 @@
     -ms-user-select: text !important;
     user-select: text !important;
     pointer-events: auto;
+  }
+  
+  /* 自定义背景颜色类 */
+  .bg-sidebar {
+    background-color: hsl(var(--sidebar-bg));
+  }
+  
+  .bg-toolbar {
+    background-color: hsl(var(--toolbar-bg));
+  }
+  
+  .bg-input-area {
+    background-color: hsl(var(--input-bg));
+  }
+  
+  .bg-chat-area {
+    background-color: hsl(var(--chat-bg));
   }
 }
 

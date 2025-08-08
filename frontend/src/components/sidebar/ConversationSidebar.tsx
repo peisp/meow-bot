@@ -44,7 +44,7 @@ export function ConversationSidebar({
   }
 
   return (
-    <div className="w-64 h-full backdrop-blur-xl border-r border-gray-200/60 flex flex-col selection-boundary">
+    <div className="w-64 h-full bg-sidebar backdrop-blur-xl border-r border-gray-300 shadow-[2px_0_8px_rgba(0,0,0,0.1)] flex flex-col selection-boundary">
       {/* 顶部标题区域 */}
       <div className="h-14 pl-24 pt-2 pb-2 flex items-center text-lg font-semibold" style={{"--wails-draggable": "drag"} as any}>
         Meow~Bot

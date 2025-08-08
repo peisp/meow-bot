@@ -33,7 +33,7 @@ export function ChatInput({
   }
 
   return (
-    <div className="border-t border-gray-200/60 backdrop-blur-xl p-4 selection-boundary relative">
+    <div className="border-t border-gray-200/60 bg-input-area backdrop-blur-xl p-4 selection-boundary relative">
       <form onSubmit={handleSubmit} className="flex gap-3">
         <div className="flex-1 relative">
           <Input
